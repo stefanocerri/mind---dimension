@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export default function Home() {
   return (
     <StyledBox>
-      <StyledTitle>Fuck You</StyledTitle>
+      <StyledTitle>Fuck You.</StyledTitle>
     </StyledBox>
   );
 }
