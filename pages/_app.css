@@ -1,1 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap');
+@font-face {
+  font-family: "Voyage-Bold";
+  src: url("/fonts/Voyage-Bold.otf") format("truetype");
+  font-weight: bold;
+  font-display: auto;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Voyage-Regular";
+  src: url("/fonts/Voyage-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-display: auto;
+  font-style: normal;
+}
