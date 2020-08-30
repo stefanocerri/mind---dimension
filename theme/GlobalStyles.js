@@ -12,23 +12,11 @@ const GlobalStyle = createGlobalStyle`
  }
 
  body {
-   margin-top: 40px;
-   /* font-family: Gilroy-Bold; */
-   font-family: 'Merriweather', serif;
+   margin:0;
+   font-family: "Voyage-Bold";
    font-size: 16px;
    line-height: 1.5rem;
  }
-
-
- /* @font-face {
-    font-family: "Voyage-Bold";
-    src: url("/fonts/Voyage-Bold.otf") format("truetype"),
-  }
-
- @font-face {
-    font-family: "Voyage-Regular";
-    src: url("/fonts/Voyage-Regular.otf") format("truetype"),
-  } */
 
 `;
 
