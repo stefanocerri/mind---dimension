@@ -8,8 +8,6 @@ export default function Home() {
   );
 }
 
-
-
 const StyledBox = styled.div`
   display: flex;
   flex-direction: row;
