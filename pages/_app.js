@@ -15,6 +15,10 @@ export default class MyApp extends App {
           <title>Mind Dimension - Oh Gosh &#128588;&#127995;</title>
           <meta charSet="utf-8" />
           <meta
+            name="google-site-verification"
+            content="_25rs9Q2Sn6u84M05hi0AhfnWKBjs6u8mzmfhbi_BVk"
+          />
+          <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
           />
