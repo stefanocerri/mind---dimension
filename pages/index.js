@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 
+
 export default function Home() {
+
   return (
-    <StyledBox>
-      <StyledTitle>Fuck You.</StyledTitle>
-    </StyledBox>
+      <StyledBox>
+        <StyledTitle>Fuck You.</StyledTitle>
+      </StyledBox>
   );
 }
 
@@ -21,3 +23,4 @@ const StyledTitle = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes.hero};
   color: ${({ theme }) => theme.colors.black};
 `;
+
