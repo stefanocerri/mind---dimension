@@ -4,6 +4,7 @@ import {
   useViewportScroll,
   motion,
   useTransform,
+  useSpring,
   useMotionValue,
   motionValue,
   useElementScroll,
@@ -11,21 +12,34 @@ import {
 import { Grid, Row, Col } from "react-styled-flexboxgrid";
 import Image from '../components/Image';
 import TextSplitting from '../components/TextSplitting';
-// import ScrollContainer from '../components/ScrollContainer';
-import { useInView } from "react-intersection-observer";
+import TextPathAnimation from '../components/TextPathAnimation';
+import { useInView} from "react-intersection-observer";
 
 
-const variants = {
-  visible: { opacity: 1, scale: 1, y: 0 },
-  hidden: {
-    opacity: 0,
-    scale: 0.65,
-    y: 50,
-  },
+const transition = {
+  duration: 4,
+  ease: "easeInOut",
+  yoyo: Infinity,
 };
+
+
+
+const letter = "stneserP xaW lanrutcoN"
 
 export default function Landing() {
 
+
+   const { scrollY } = useViewportScroll();
+   const [position, setPosition] = useState(0);
+
+   const [isComplete, setIsComplete] = useState(false);
+   const { scrollYProgress } = useViewportScroll();
+   const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
+   const yRange = useTransform(scrollYProgress, [0, 1], [0, 1]);
+   const pathLength = useSpring(yRange, { stiffness: 400, damping: 90 });
+
+
+    useEffect(() => yRange.onChange((v) => setIsComplete(v >= 1)), [yRange]);
 
   return (
     // <ScrollContainer>
@@ -35,26 +49,35 @@ export default function Landing() {
           <TextSplitting style={{ marginTop: 72, marginBottom: 400 }}>
             Donec nibh ante, vehicula vitae lacus quis, fringilla bibendum orci.
             In eu semper orci, et gravida quam. Pellentesque placerat mi eu nunc
-            ultrices molestie. Donec nibh ante, vehicula vitae lacus quis,
-            fringilla bibendum orci. In eu semper orci, et gravida quam.
-            Pellentesque placerat mi eu nunc ultrices molestie. Donec nibh ante,
-            vehicula vitae lacus quis, fringilla bibendum orci. In eu semper
-            orci, et gravida quam. Pellentesque placerat mi eu nunc ultrices
-            molestie. Donec nibh ante, vehicula vitae lacus quis, fringilla
-            bibendum orci. In eu semper orci, et gravida quam. Pellentesque
-            placerat mi eu nunc ultrices molestie. Donec nibh ante, vehicula
-            vitae lacus quis, fringilla bibendum orci. In eu semper orci, et
-            gravida quam. Pellentesque placerat mi eu nunc ultrices molestie.
-            Donec nibh ante, vehicula vitae lacus quis, fringilla bibendum orci.
-            In eu semper orci, et gravida quam. Pellentesque placerat mi eu nunc
-            ultrices molestie. Donec nibh ante, vehicula vitae lacus quis,
-            fringilla bibendum orci. In eu semper orci, et gravida quam.
-            Pellentesque placerat mi eu nunc ultrices molestie. fringilla
-            bibendum orci. In eu semper orci, et
+            ultrices molestie. Donec nibh ante
           </TextSplitting>
         </Col>
 
-{/*
+        <Col md={12}>
+          <TextPathAnimation>Donec nibh ante, vehicula vit</TextPathAnimation>
+          <svg
+            data-filter-type="distortion"
+            width="100%"
+            viewBox="0 0 1000 200"
+          >
+            <motion.path
+              id="text-curve2"
+              d="M 0 50 Q 100 0 200 100 Q 300 200 650 50 C 750 0 750 150 1000 50"
+              fill="none"
+              stroke="red"
+              style={{
+                pathLength,
+              }}
+            />
+            <text>
+              <textPath href="#text-curve2" startOffset={position/2}>
+                Dwell on the beauty of life. Watch the stars.
+              </textPath>
+            </text>
+          </svg>
+        </Col>
+
+        {/*
         <motion.div
           style={{
             display: "flex",
@@ -139,5 +162,6 @@ const StyledImage = styled(motion.img)`
     object-fit: cover;
     object-position: top;
 `;
+
 
 
