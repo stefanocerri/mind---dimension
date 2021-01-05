@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import styled from "styled-components";
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 import { InView } from "react-intersection-observer";
 
 const container = {

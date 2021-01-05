@@ -15,7 +15,9 @@
     "react-is": "^16.8.0",
     "react-styled-flexboxgrid": "^3.2.1",
     "resize-observer-polyfill": "^1.5.1",
-    "styled-components": "^5.0.0"
+    "styled-components": "^5.0.0",
+    "axios": "^0.19.2",
+    "node-html-parser": "^1.2.16"
   },
   "devDependencies": {
     "babel-plugin-styled-components": "^1.8.0"
