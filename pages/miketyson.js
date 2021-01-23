@@ -1,5 +1,5 @@
-const mutingthenoise = require("./mutingthenoise/index");
-const deejay = require("./deejay/index");
+const mutingthenoise = require("../miketyson/mutingthenoise/index");
+const deejay = require("../miketyson/deejay/index");
 import styled from "styled-components";
 
 export default function Home() {
@@ -9,14 +9,27 @@ export default function Home() {
     deejay.getPage(40)
     console.log("ok")
     }
-  return <StyledButton onClick={() => button()}>ciao</StyledButton>;
+  return (
+    <StyledBox>
+      <StyledButton onClick={() => button()}>Give me Mike Tyson's power!</StyledButton>
+    </StyledBox>
+  );
 }
 
+const StyledBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
 const StyledButton = styled.a`
-  padding: 8px 24px;
+  padding: 12px 24px;
   border-radius: 48px;
-  font-size: ${(props) => props.theme.fontSizes.small};
-  background: ${(props) => props.theme.colors.white};
+  font-size: ${(props) => props.theme.fontSizes.h3};
+  background: ${(props) => props.theme.colors.primary};
   border: 1px solid ${(props) => props.theme.colors.white};
   color: ${(props) => props.theme.colors.black};
   margin-top: 12px;
