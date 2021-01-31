@@ -10,6 +10,7 @@ var services = {
     let res = await axios.get(url, {
       headers: {
         "Access-Control-Allow-Origin": "*",
+        "Content-type": "application/json",
       },
     });
     let data = res.data;
@@ -35,6 +36,7 @@ var services = {
     let res = await axios.get(urlPagination, {
       headers: {
         "Access-Control-Allow-Origin": "*",
+        "Content-type": "application/json",
       },
     });
     let data = res.data;
@@ -58,6 +60,7 @@ var services = {
     let res = await axios.get(urlPageContent, {
       headers: {
         "Access-Control-Allow-Origin": "*",
+        "Content-type": "application/json",
       },
     });
     let data = res.data;
