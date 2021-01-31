@@ -7,7 +7,11 @@ var services = {
   async getHrefPage(urlPagination, url) {
     //console.log("urlPagination", urlPagination);
 
-    let res = await axios.get(urlPagination);
+    let res = await axios.get(urlPagination, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
     let data = res.data;
 
     if (res.status === 200) {
@@ -31,7 +35,11 @@ var services = {
   async getContentPage(urlPageContent, url) {
     //console.log("urlPagination", urlPageContent);
 
-    let res = await axios.get(urlPageContent);
+    let res = await axios.get(urlPageContent, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
     let data = res.data;
 
     if (res.status === 200) {
