@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mind Dimension · Palestra Playwright</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; background: #111; color: #eee; }
+    section { border: 1px solid #333; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; }
+    input, button { font: inherit; padding: .4rem .7rem; }
+    button { cursor: pointer; }
+    .errore { color: #ff7676; }
+    .ok { color: #7dff9a; }
+    li.fatto { text-decoration: line-through; opacity: .6; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <h1>Mind Dimension</h1>
+  <p>Una pagina finta, fatta apposta per esercitarsi con Playwright.</p>
+
+  <!-- 1. Un contatore: il caso più semplice -->
+  <section aria-labelledby="t-contatore">
+    <h2 id="t-contatore">Contatore</h2>
+    <p>Hai cliccato <output id="conteggio" data-testid="conteggio">0</output> volte.</p>
+    <button type="button" id="incrementa">Aggiungi uno</button>
+    <button type="button" id="azzera">Azzera</button>
+  </section>
+
+  <!-- 2. Un form con validazione -->
+  <section aria-labelledby="t-accesso">
+    <h2 id="t-accesso">Accesso</h2>
+    <form id="form-accesso" novalidate>
+      <p><label>Email <input type="email" name="email" required></label></p>
+      <p><label>Password <input type="password" name="password" required minlength="6"></label></p>
+      <p><label><input type="checkbox" name="ricordami"> Ricordami</label></p>
+      <button type="submit">Entra</button>
+    </form>
+    <p id="esito-accesso" role="status"></p>
+  </section>
+
+  <!-- 3. Una lista di cose da fare -->
+  <section aria-labelledby="t-todo">
+    <h2 id="t-todo">Cose da fare</h2>
+    <form id="form-todo">
+      <label>Nuova cosa <input name="voce" placeholder="Scrivi e premi Invio"></label>
+    </form>
+    <ul id="lista" aria-label="Lista delle cose da fare"></ul>
+    <p data-testid="riepilogo">Nessuna cosa da fare</p>
+  </section>
+
+  <!-- 4. Dati caricati in ritardo da una API -->
+  <section aria-labelledby="t-frasi">
+    <h2 id="t-frasi">Frasi dalla API</h2>
+    <button type="button" id="carica">Carica frasi</button>
+    <p id="caricamento" hidden>Caricamento…</p>
+    <ul id="frasi" aria-label="Frasi"></ul>
+  </section>
+
+  <!-- 5. Una finestra di dialogo -->
+  <section aria-labelledby="t-dialogo">
+    <h2 id="t-dialogo">Dialogo</h2>
+    <button type="button" id="apri">Apri la porta</button>
+    <dialog id="porta" aria-labelledby="t-porta">
+      <h3 id="t-porta">Sei entrato in un'altra dimensione</h3>
+      <button type="button" id="chiudi">Chiudi</button>
+    </dialog>
+  </section>
+
+  <script>
+    // --- Contatore
+    const conteggio = document.getElementById('conteggio');
+    document.getElementById('incrementa').addEventListener('click', () => {
+      conteggio.textContent = Number(conteggio.textContent) + 1;
+    });
+    document.getElementById('azzera').addEventListener('click', () => { conteggio.textContent = '0'; });
+
+    // --- Accesso
+    const formAccesso = document.getElementById('form-accesso');
+    const esito = document.getElementById('esito-accesso');
+    formAccesso.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const dati = new FormData(formAccesso);
+      const email = String(dati.get('email'));
+      const password = String(dati.get('password'));
+      if (!email.includes('@')) {
+        esito.textContent = 'Email non valida';
+        esito.className = 'errore';
+      } else if (password.length < 6) {
+        esito.textContent = 'La password deve avere almeno 6 caratteri';
+        esito.className = 'errore';
+      } else {
+        esito.textContent = `Benvenuto, ${email}!` + (dati.get('ricordami') ? ' Ti ricorderemo.' : '');
+        esito.className = 'ok';
+      }
+    });
+
+    // --- Cose da fare
+    const formTodo = document.getElementById('form-todo');
+    const lista = document.getElementById('lista');
+    const riepilogo = document.querySelector('[data-testid="riepilogo"]');
+    function aggiornaRiepilogo() {
+      const totali = lista.children.length;
+      const fatte = lista.querySelectorAll('li.fatto').length;
+      riepilogo.textContent = totali === 0 ? 'Nessuna cosa da fare' : `${fatte} di ${totali} completate`;
+    }
+    formTodo.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = formTodo.elements.voce;
+      const testo = input.value.trim();
+      if (!testo) return;
+      const li = document.createElement('li');
+      const check = document.createElement('input');
+      check.type = 'checkbox';
+      check.setAttribute('aria-label', `Completa ${testo}`);
+      check.addEventListener('change', () => { li.classList.toggle('fatto', check.checked); aggiornaRiepilogo(); });
+      const cancella = document.createElement('button');
+      cancella.type = 'button';
+      cancella.textContent = 'Elimina';
+      cancella.addEventListener('click', () => { li.remove(); aggiornaRiepilogo(); });
+      li.append(check, ' ', testo, ' ', cancella);
+      lista.append(li);
+      input.value = '';
+      aggiornaRiepilogo();
+    });
+
+    // --- Frasi dalla API
+    const caricamento = document.getElementById('caricamento');
+    const frasi = document.getElementById('frasi');
+    document.getElementById('carica').addEventListener('click', async () => {
+      caricamento.hidden = false;
+      frasi.innerHTML = '';
+      try {
+        const risposta = await fetch('/api/frasi');
+        if (!risposta.ok) throw new Error(`HTTP ${risposta.status}`);
+        for (const frase of await risposta.json()) {
+          const li = document.createElement('li');
+          li.textContent = frase.testo;
+          frasi.append(li);
+        }
+      } catch (err) {
+        const li = document.createElement('li');
+        li.className = 'errore';
+        li.textContent = 'Impossibile caricare le frasi';
+        frasi.append(li);
+      } finally {
+        caricamento.hidden = true;
+      }
+    });
+
+    // --- Dialogo
+    const porta = document.getElementById('porta');
+    document.getElementById('apri').addEventListener('click', () => porta.showModal());
+    document.getElementById('chiudi').addEventListener('click', () => porta.close());
+  </script>
+</body>
+</html>
