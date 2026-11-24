@@ -72,6 +72,18 @@ I selettori vengono dal vecchio scraper del 2021: se il sito è cambiato e trovi
 apri `output/deejay-lista.html` oppure lancia `npm run codegen-deejay`, clicca sugli elementi
 e guarda quali selettori propone Playwright. Aggiornarli è un ottimo esercizio.
 
+## Diagnosi dell'accesso a deejay.de (Mac)
+
+```bash
+npx playwright install chromium webkit
+node diagnosi/deejay-mac.mjs
+```
+
+Confronta curl, Node, Chromium headless, Chromium con finestra, Chrome, WebKit e Safari (automatico e usato da te),
+con una sola richiesta alla home per client e 5 secondi di pausa. Salva il risultato in `diagnosi/risultati/`
+(JSON e una tabella in Markdown). Per il test di Safari automatico: `sudo safaridriver --enable` e in Safari
+Sviluppo → Consenti automazione remota.
+
 ## Tre regole d'oro
 
 - Usa `await expect(...)`: riprova da solo finché la condizione è vera, quindi niente `sleep`.
