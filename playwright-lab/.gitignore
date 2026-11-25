@@ -1,9 +1,0 @@
-node_modules/
-test-results/
-playwright-report/
-blob-report/
-# Gli screenshot di riferimento dipendono dal sistema (linux/darwin): ognuno crea i suoi
-tests/*-snapshots/
-.profilo-browser/
-output/
-diagnosi/risultati/
